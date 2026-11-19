@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrintEasy Studio – Professional Print Layout</title>
+<style>
+/* ═══════════════════════════════════════════════════
+   RESET & PROFESSIONAL TYPOGRAPHY
+═══════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ═══════════════════════════════════════════════════
+   DESIGN TOKENS — DARK RED & BLACK THEME
+═══════════════════════════════════════════════════ */
+:root{
+  /* Dark Obsidian & Velvet Red Surfaces */
+  --bg-deep:#060204;
+  --bg-surface:#0d0508;
+  --glass-bg:rgba(22, 7, 12, 0.68);
+  --glass-bg-hover:rgba(32, 10, 18, 0.78);
+  --glass-card:rgba(18, 5, 10, 0.65);
+  --glass-input:rgba(10, 3, 5, 0.82);
+  --glass-border:rgba(239, 68, 68, 0.18);
+  --glass-border-hover:rgba(239, 68, 68, 0.42);
+  --glass-border-active:rgba(244, 63, 94, 0.7);
+  --glass-blur:blur(22px);
+  --glass-blur-sm:blur(12px);
+
+  /* Professional Crimson & Scarlet Palette */
+  --red-500:#ef4444;
+  --red-600:#dc2626;
+  --red-700:#b91c1c;
+  --red-800:#991b1b;
+  --red-900:#7f1d1d;
+  --rose-400:#fb7185;
+  --rose-300:#fda4af;
+  --amber-500:#f59e0b;
+  --green-500:#10b981;
+
+  /* Typography Colors */
+  --text-main:#fff1f2;
+  --text-sub:#fecdd3;
+  --text-muted:#9e717b;
+  --text-dim:#63464d;
+
+  /* Glowing Accents */
+  --glow-crimson:0 0 24px rgba(239, 68, 68, 0.45);
+  --glow-crimson-subtle:0 0 16px rgba(220, 38, 38, 0.25);
+  --glow-rose:0 0 20px rgba(251, 113, 133, 0.35);
+  --glow-amber:0 0 20px rgba(245, 158, 11, 0.35);
+
+  /* Layout Constants */
+  --r:8px;
+  --r-md:12px;
+  --r-lg:16px;
+  --sidebar:286px;
+  --hdr:54px;
+}
+
+/* ═══════════════════════════════════════════════════
+   CINEMATIC DARK RED & OBSIDIAN BACKGROUND
+═══════════════════════════════════════════════════ */
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,Helvetica,sans-serif;
+  background:var(--bg-deep);
+  color:var(--text-main);
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  position:relative;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* Deep Crimson Radial Vignettes */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 65% 50% at 10% 15%, rgba(185, 28, 28, 0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 90% 85%, rgba(153, 27, 27, 0.14) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(225, 29, 72, 0.06) 0%, transparent 70%),
+    linear-gradient(160deg, #060204 0%, #0b0307 45%, #050103 100%);
+  pointer-events:none;
+}
+
+/* Subtle Animated Ambient Orbs */
+.orb{
+  position:fixed;border-radius:50%;filter:blur(85px);pointer-events:none;z-index:0;
+  animation:orbShift 16s ease-in-out infinite alternate;
+}
+.orb1{width:420px;height:420px;background:rgba(220, 38, 38, 0.11);top:-120px;left:-100px;}
+.orb2{width:340px;height:340px;background:rgba(153, 27, 27, 0.13);bottom:-90px;right:-90px;animation-duration:20s;animation-delay:-6s;}
+.orb3{width:240px;height:240px;background:rgba(244, 63, 94, 0.08);top:45%;right:35%;animation-duration:18s;animation-delay:-3s;}
+
+@keyframes orbShift{
+  0%{transform:translate(0,0) scale(1)}
+  100%{transform:translate(35px,25px) scale(1.08)}
+}
+
+header,.app,.toasts{position:relative;z-index:1}
+
+/* ═══════════════════════════════════════════════════
+   HEADER BAR
+═══════════════════════════════════════════════════ */
+header{
+  height:var(--hdr);
+  background:rgba(13, 5, 8, 0.78);
+  backdrop-filter:var(--glass-blur);
+  -webkit-backdrop-filter:var(--glass-blur);
+  border-bottom:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.25rem;flex-shrink:0;gap:.75rem;
+  box-shadow:0 4px 24px rgba(0,0,0,0.45);
+}
+
+.logo{
+  display:flex;align-items:center;gap:.65rem;
+  font-weight:800;font-size:1.02rem;letter-spacing:-.02em;
+  white-space:nowrap;
+}
+.logo-icon{
+  width:34px;height:34px;
+  background:linear-gradient(135deg, var(--red-500) 0%, var(--red-900) 100%);
+  border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;flex-shrink:0;
+  border:1px solid rgba(254, 205, 211, 0.25);
+  box-shadow:var(--glow-crimson);
+}
+.logo-text{
+  background:linear-gradient(90deg, #ffffff 30%, var(--rose-300) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-weight:800;
+}
+.logo-sub{
+  font-size:.62rem;color:var(--text-muted);font-weight:500;
+  margin-left:1px;-webkit-text-fill-color:var(--text-muted);
+  letter-spacing:.02em;
+}
+
+.hdr-mid{flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem}
+
+/* Live Preview Indicator */
+.live-pill{
+  display:flex;align-items:center;gap:.4rem;
+  background:rgba(239, 68, 68, 0.12);
+  border:1px solid rgba(239, 68, 68, 0.35);
+  border-radius:20px;padding:.26rem .75rem;
+  font-size:.65rem;font-weight:700;color:var(--rose-300);
+  letter-spacing:.04em;text-transform:uppercase;
+  transition:all .3s ease;
+  box-shadow:0 0 14px rgba(239, 68, 68, 0.2);
+}
+.live-pill.off{
+  background:rgba(255,255,255,.03);
+  border-color:rgba(255,255,255,.08);
+  color:var(--text-dim);
+  box-shadow:none;
+}
+.live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--red-500);
+  box-shadow:0 0 8px var(--red-500);
+  animation:pulseDot 1.4s infinite;flex-shrink:0;
+}
+.live-dot.off{background:var(--text-dim);box-shadow:none;animation:none}
+.live-pill.off .live-dot{background:var(--text-dim);box-shadow:none}
+
+@keyframes pulseDot{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.45;transform:scale(.78)}
+}
+
+.hdr-actions{display:flex;gap:.5rem;flex-shrink:0}
+
+/* ═══════════════════════════════════════════════════
+   PREMIUM ACTION BUTTONS
+═══════════════════════════════════════════════════ */
+.btn{
+  display:inline-flex;align-items:center;gap:.38rem;
+  font-size:.74rem;font-weight:700;
+  padding:.44rem .95rem;border-radius:var(--r);
+  border:1px solid transparent;cursor:pointer;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+  white-space:nowrap;line-height:1;
+  letter-spacing:.015em;
+}
+.btn:disabled{opacity:.28;cursor:not-allowed;pointer-events:none}
+
+/* Print Button — Radiant Crimson */
+.btn-green, .btn-primary{
+  background:linear-gradient(135deg, var(--red-500) 0%, var(--red-700) 100%);
+  color:#ffffff;
+  border:1px solid rgba(254, 205, 211, 0.35);
+  box-shadow:0 3px 14px rgba(220, 38, 38, 0.42);
+}
+.btn-green:hover, .btn-primary:hover{
+  transform:translateY(-1.5px);
+  background:linear-gradient(135deg, #f87171 0%, var(--red-600) 100%);
+  box-shadow:0 5px 22px rgba(239, 68, 68, 0.58);
+}
+
+/* Download Button — Warm Vermilion Ruby */
+.btn-amber{
+  background:linear-gradient(135deg, #f97316 0%, var(--red-600) 100%);
+  color:#ffffff;
+  border:1px solid rgba(254, 215, 170, 0.3);
+  box-shadow:0 3px 12px rgba(249, 115, 22, 0.35);
+}
+.btn-amber:hover{
+  transform:translateY(-1.5px);
+  box-shadow:0 5px 20px rgba(249, 115, 22, 0.52);
+}
+
+/* Reset / Ghost Button — Obsidian Glass */
+.btn-glass{
+  background:rgba(255, 255, 255, 0.04);
+  color:var(--text-sub);
+  border:1px solid var(--glass-border);
+  backdrop-filter:var(--glass-blur-sm);
+}
+.btn-glass:hover{
+  background:rgba(239, 68, 68, 0.12);
+  color:#ffffff;
+  border-color:var(--glass-border-hover);
+}
+
+.btn-sm{padding:.34rem .72rem;font-size:.69rem}
+.btn-xs{padding:.22rem .5rem;font-size:.64rem}
+.btn-icon{padding:.36rem;width:30px;height:30px;justify-content:center}
+
+/* ═══════════════════════════════════════════════════
+   APP SHELL
+═══════════════════════════════════════════════════ */
+.app{display:flex;flex:1;overflow:hidden}
+
+/* ═══════════════════════════════════════════════════
+   SIDEBAR (FROSTED OBSIDIAN-RED)
+═══════════════════════════════════════════════════ */
+.sidebar{
+  width:var(--sidebar);flex-shrink:0;
+  background:rgba(13, 5, 8, 0.82);
+  backdrop-filter:var(--glass-blur);
+  -webkit-backdrop-filter:var(--glass-blur);
+  border-right:1px solid var(--glass-border);
+  display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:4px 0 24px rgba(0,0,0,0.5);
+}
+.sidebar-scroll{
+  flex:1;overflow-y:auto;padding:.85rem;
+  display:flex;flex-direction:column;gap:.65rem;
+}
+
+/* ═══════════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════════ */
+.tab-bar{
+  display:flex;
+  border-bottom:1px solid var(--glass-border);
+  flex-shrink:0;padding:.4rem .4rem 0;gap:.35rem;
+  background:rgba(8, 2, 4, 0.55);
+}
+.tab{
+  flex:1;padding:.55rem .45rem;font-size:.71rem;font-weight:700;
+  text-align:center;cursor:pointer;color:var(--text-muted);
+  border:none;background:none;border-radius:8px 8px 0 0;
+  border-bottom:2px solid transparent;transition:all .2s ease;
+  letter-spacing:.02em;
+}
+.tab.on{
+  color:#ffffff;
+  border-bottom-color:var(--red-500);
+  background:linear-gradient(180deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.04) 100%);
+  text-shadow:0 0 10px rgba(239, 68, 68, 0.4);
+}
+.tab:hover:not(.on){
+  color:var(--text-sub);
+  background:rgba(239, 68, 68, 0.06);
+}
+.panel{display:none;flex-direction:column;gap:.65rem}
+.panel.on{display:flex}
+
+/* ═══════════════════════════════════════════════════
+   CARDS / PANELS
+═══════════════════════════════════════════════════ */
+.card{
+  background:var(--glass-card);
+  border:1px solid var(--glass-border);
+  border-radius:var(--r-md);
+  padding:.75rem;
+  display:flex;flex-direction:column;gap:.5rem;
+  backdrop-filter:var(--glass-blur-sm);
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.card:hover{
+  border-color:var(--glass-border-hover);
+  box-shadow:0 4px 18px rgba(0,0,0,0.35);
+}
+.card-title{
+  font-size:.62rem;font-weight:800;
+  letter-spacing:.09em;text-transform:uppercase;
+  display:flex;align-items:center;gap:.42rem;
+  color:var(--rose-300);
+}
+.card-title.accent{color:var(--rose-300)}
+.card-title.cyan, .card-title.amber, .card-title.green{color:var(--rose-300)}
+
+.badge{
+  font-size:.56rem;font-weight:700;padding:.12rem .44rem;border-radius:20px;
+  line-height:1.3;letter-spacing:.02em;
+}
+.badge-accent, .badge-green, .badge-amber{
+  background:rgba(239, 68, 68, 0.16);
+  color:var(--rose-300);
+  border:1px solid rgba(239, 68, 68, 0.32);
+}
+
+.lbl{
+  font-size:.6rem;font-weight:700;color:var(--text-muted);
+  letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:.18rem;display:flex;align-items:center;gap:.35rem;
+}
+
+.sep{height:1px;background:var(--glass-border);flex-shrink:0;margin:.1rem 0}
+
+/* ═══════════════════════════════════════════════════
+   FORM CONTROLS (OBSIDIAN DARK INPUTS)
+═══════════════════════════════════════════════════ */
+select,input[type=number]{
+  width:100%;
+  background:var(--glass-input);
+  border:1px solid var(--glass-border);
+  color:var(--text-main);
+  border-radius:var(--r);
+  font-size:.75rem;
+  padding:.42rem .6rem;
+  outline:none;
+  transition:all .2s ease;
+  cursor:pointer;
+  backdrop-filter:var(--glass-blur-sm);
+  -webkit-appearance:none;
+}
+select:focus,input[type=number]:focus{
+  border-color:var(--red-500);
+  box-shadow:0 0 0 3px rgba(239, 68, 68, 0.22);
+}
+select option{background:#140509;color:var(--text-main)}
+
+/* Range Sliders — Crimson Active */
+input[type=range]{
+  width:100%;accent-color:var(--red-500);cursor:pointer;
+  height:4px;border-radius:4px;
+  background:rgba(239, 68, 68, 0.18);
+  outline:none;border:none;padding:0;
+}
+
+.row{display:flex;flex-direction:column;gap:.22rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
+
+.range-wrap{display:flex;align-items:center;gap:.55rem}
+.range-wrap span.icon{font-size:.65rem;color:var(--text-muted);white-space:nowrap;min-width:28px}
+.range-val{
+  font-size:.68rem;color:var(--rose-300);min-width:38px;
+  text-align:right;font-weight:800;white-space:nowrap;
+}
+
+/* ═══════════════════════════════════════════════════
+   PILL RADIOS
+═══════════════════════════════════════════════════ */
+.pills{display:flex;gap:.32rem}
+.pill{flex:1;position:relative}
+.pill input{position:absolute;opacity:0;width:0;height:0}
+.pill label{
+  display:flex;align-items:center;justify-content:center;
+  padding:.38rem .32rem;border-radius:8px;
+  border:1px solid var(--glass-border);
+  font-size:.68rem;font-weight:700;cursor:pointer;
+  transition:all .2s ease;color:var(--text-muted);
+  background:rgba(8, 2, 4, 0.6);
+  white-space:nowrap;text-align:center;width:100%;
+}
+.pill input:checked+label{
+  background:linear-gradient(135deg, rgba(239, 68, 68, 0.32) 0%, rgba(185, 28, 28, 0.22) 100%);
+  border-color:rgba(244, 63, 94, 0.65);
+  color:#ffffff;
+  box-shadow:0 0 14px rgba(220, 38, 38, 0.35);
+}
+.pill label:hover:not(:has(input:checked)){
+  border-color:var(--glass-border-hover);
+  color:var(--text-sub);
+}
+
+/* ═══════════════════════════════════════════════════
+   TOGGLE SWITCH
+═══════════════════════════════════════════════════ */
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:.2rem 0}
+.tog-lbl{font-size:.72rem;color:var(--text-sub)}
+.tog{position:relative;width:36px;height:20px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.tog-s{
+  position:absolute;inset:0;
+  background:rgba(239, 68, 68, 0.14);
+  border:1px solid var(--glass-border);
+  border-radius:20px;cursor:pointer;transition:.25s ease;
+}
+.tog-s::before{
+  content:'';position:absolute;
+  width:14px;height:14px;left:2px;top:2px;
+  background:var(--text-muted);border-radius:50%;transition:.25s ease;
+}
+.tog input:checked+.tog-s{
+  background:linear-gradient(135deg, var(--red-500) 0%, var(--red-700) 100%);
+  border-color:var(--red-500);
+  box-shadow:0 0 12px rgba(239, 68, 68, 0.45);
+}
+.tog input:checked+.tog-s::before{transform:translateX(16px);background:#ffffff}
+
+/* ═══════════════════════════════════════════════════
+   DROPZONE (CRIMSON ACCENTED)
+═══════════════════════════════════════════════════ */
+.dropzone{
+  border:2px dashed rgba(239, 68, 68, 0.32);
+  border-radius:var(--r-md);padding:1.15rem;
+  text-align:center;cursor:pointer;
+  transition:all .25s ease;
+  background:rgba(239, 68, 68, 0.04);
+  position:relative;user-select:none;
+}
+.dropzone:hover,.dropzone.over{
+  border-color:rgba(244, 63, 94, 0.75);
+  background:rgba(239, 68, 68, 0.1);
+  box-shadow:0 0 22px rgba(239, 68, 68, 0.22);
+}
+.dropzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.dz-icon{font-size:1.6rem;margin-bottom:.32rem}
+.dz-ttl{font-size:.78rem;font-weight:700;margin-bottom:.14rem;color:var(--text-main)}
+.dz-sub{font-size:.63rem;color:var(--text-muted)}
+
+/* Thumbnails */
+.thumbs{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.4rem}
+.thumb-wrap{position:relative;display:inline-block}
+.thumb{
+  width:48px;height:48px;border-radius:8px;object-fit:cover;
+  border:2px solid var(--glass-border);
+  cursor:pointer;transition:all .2s ease;display:block;
+}
+.thumb:hover{border-color:rgba(239, 68, 68, 0.6);transform:scale(1.06)}
+.thumb.on{
+  border-color:var(--red-500);
+  box-shadow:0 0 12px rgba(239, 68, 68, 0.5);
+}
+.thumb-x{
+  position:absolute;top:-5px;right:-5px;
+  width:16px;height:16px;
+  background:var(--red-600);border-radius:50%;border:none;
+  cursor:pointer;font-size:10px;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  padding:0;line-height:1;
+  box-shadow:0 0 8px rgba(220, 38, 38, 0.6);
+}
+
+/* ═══════════════════════════════════════════════════
+   SLOT ASSIGNMENT GRID
+═══════════════════════════════════════════════════ */
+.slot-grid{display:grid;gap:.4rem}
+.slot-grid.g1{grid-template-columns:1fr}
+.slot-grid.g2{grid-template-columns:1fr 1fr}
+.slot-grid.g4{grid-template-columns:1fr 1fr}
+.slot-item{
+  border:1px solid var(--glass-border);border-radius:var(--r);
+  overflow:hidden;cursor:pointer;transition:all .2s ease;
+  background:rgba(10, 3, 5, 0.6);position:relative;
+}
+.slot-item:hover{
+  border-color:rgba(239, 68, 68, 0.6);
+  box-shadow:0 0 14px rgba(239, 68, 68, 0.3);
+}
+.slot-label{
+  font-size:.58rem;font-weight:800;color:#fff;padding:.2rem .42rem;
+  background:rgba(185, 28, 28, 0.72);backdrop-filter:blur(6px);
+  position:absolute;top:0;left:0;z-index:2;border-bottom-right-radius:6px;
+  letter-spacing:.04em;
+}
+.slot-img{width:100%;height:52px;object-fit:cover;display:block}
+.slot-change{
+  position:absolute;bottom:0;right:0;
+  font-size:.59rem;background:rgba(220, 38, 38, 0.85);color:#fff;
+  padding:.14rem .35rem;border-radius:6px 0 0 0;
+  opacity:0;transition:opacity .15s ease;
+  backdrop-filter:blur(4px);font-weight:600;
+}
+.slot-item:hover .slot-change{opacity:1}
+.slot-hint{font-size:.63rem;color:var(--text-muted);text-align:center;padding:.35rem}
+
+/* ═══════════════════════════════════════════════════
+   FRAMING TOOL
+═══════════════════════════════════════════════════ */
+.frame-outer{
+  border-radius:var(--r-md);overflow:hidden;
+  background:rgba(8, 2, 4, 0.8);position:relative;
+  user-select:none;touch-action:none;
+  border:1px solid var(--glass-border);
+}
+.frame-canvas{display:block;width:100%;height:100%;cursor:grab}
+.frame-canvas:active{cursor:grabbing}
+.frame-oval{
+  position:absolute;inset:8% 15%;
+  border:2px dashed rgba(254, 205, 211, 0.45);
+  border-radius:50%;pointer-events:none;display:none;
+  box-shadow:inset 0 0 20px rgba(239, 68, 68, 0.2);
+}
+
+/* Color Swatches */
+.swatches{display:flex;gap:.35rem;flex-wrap:wrap;padding:.1rem 0}
+.sw{
+  width:22px;height:22px;border-radius:50%;cursor:pointer;
+  border:2px solid transparent;transition:all .2s ease;flex-shrink:0;
+}
+.sw:hover{transform:scale(1.15)}
+.sw.on{border-color:#ffffff;box-shadow:0 0 10px rgba(255,255,255,0.5)}
+
+/* ═══════════════════════════════════════════════════
+   PACKAGES
+═══════════════════════════════════════════════════ */
+.pkg-grid{display:grid;grid-template-columns:1fr 1fr;gap:.35rem}
+.pkg{
+  padding:.44rem .52rem;
+  border:1px solid var(--glass-border);
+  border-radius:var(--r);cursor:pointer;transition:all .2s ease;
+  background:rgba(10, 3, 5, 0.55);
+}
+.pkg:hover{
+  border-color:rgba(239, 68, 68, 0.45);
+  background:rgba(239, 68, 68, 0.08);
+}
+.pkg.on{
+  border-color:rgba(244, 63, 94, 0.7);
+  background:linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(185, 28, 28, 0.12) 100%);
+  box-shadow:0 0 14px rgba(220, 38, 38, 0.26);
+}
+.pkg-t{font-size:.68rem;font-weight:700;margin-bottom:.1rem;color:var(--text-main)}
+.pkg-s{font-size:.58rem;color:var(--text-muted)}
+
+/* ═══════════════════════════════════════════════════
+   DIMENSION & RESIZE CONTROLS
+═══════════════════════════════════════════════════ */
+.dim-row{display:grid;grid-template-columns:1fr 1fr;gap:.42rem}
+.dim-field{display:flex;flex-direction:column;gap:.2rem}
+.dim-field label{font-size:.58rem;color:var(--text-muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.dim-wrap{position:relative}
+.dim-input{
+  background:var(--glass-input);border:1px solid var(--glass-border);
+  color:var(--text-main);border-radius:8px;font-size:.82rem;font-weight:800;
+  padding:.38rem .55rem;width:100%;outline:none;transition:all .2s ease;text-align:center;
+}
+.dim-input:focus{border-color:var(--red-500);box-shadow:0 0 0 3px rgba(239, 68, 68, 0.2)}
+.dim-unit{
+  position:absolute;right:.45rem;top:50%;transform:translateY(-50%);
+  font-size:.6rem;color:var(--text-muted);pointer-events:none;font-weight:700;
+}
+.lock-btn{
+  display:flex;align-items:center;gap:.28rem;font-size:.64rem;
+  color:var(--text-muted);background:rgba(10, 3, 5, 0.6);
+  border:1px solid var(--glass-border);border-radius:7px;
+  padding:.24rem .52rem;cursor:pointer;transition:all .2s ease;
+  font-weight:600;
+}
+.lock-btn.on{
+  color:var(--amber-500);border-color:rgba(245, 158, 11, 0.45);
+  background:rgba(245, 158, 11, 0.1);box-shadow:0 0 10px rgba(245, 158, 11, 0.2);
+}
+.lock-btn:hover{border-color:var(--glass-border-hover);color:var(--text-sub)}
+
+/* ═══════════════════════════════════════════════════
+   PREVIEW STAGE
+═══════════════════════════════════════════════════ */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+.prev-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.55rem 1rem;
+  background:rgba(13, 5, 8, 0.72);
+  backdrop-filter:var(--glass-blur);
+  border-bottom:1px solid var(--glass-border);
+  flex-shrink:0;gap:.55rem;
+}
+.prev-info{
+  font-size:.69rem;color:var(--text-muted);
+  min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.prev-info strong{color:var(--text-main);font-weight:700}
+
+.zoom-ctrls{display:flex;gap:.32rem;align-items:center;flex-shrink:0}
+.zoom-num{
+  font-size:.69rem;color:var(--rose-300);font-weight:800;
+  min-width:42px;text-align:center;
+}
+
+.canvas-area{
+  flex:1;overflow:auto;
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:1.6rem;
+  background:
+    radial-gradient(ellipse at center, rgba(185, 28, 28, 0.08) 0%, transparent 75%),
+    linear-gradient(180deg, #070204 0%, #0c0408 100%);
+}
+
+/* 300 DPI Canvas Visual Drop Shadow */
+#C{
+  box-shadow:
+    0 0 0 1px rgba(254, 205, 211, 0.15),
+    0 24px 75px rgba(0, 0, 0, 0.95),
+    0 0 60px rgba(185, 28, 28, 0.18);
+  display:none;border-radius:2px;
+}
+
+/* ═══════════════════════════════════════════════════
+   EMPTY STATE
+═══════════════════════════════════════════════════ */
+.empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.85rem;height:100%;color:var(--text-muted);text-align:center;padding:2rem;
+}
+.empty-icon{
+  font-size:3.6rem;opacity:.55;
+  filter:drop-shadow(0 0 24px rgba(239, 68, 68, 0.4));
+}
+.empty-ttl{font-size:1.05rem;font-weight:800;color:var(--text-main);letter-spacing:-.01em}
+.empty-sub{font-size:.76rem;line-height:1.75;max-width:290px;color:var(--text-muted)}
+.empty-sub strong{color:var(--rose-300);font-weight:700}
+
+/* ═══════════════════════════════════════════════════
+   STATS BAR
+═══════════════════════════════════════════════════ */
+.stats{
+  display:flex;gap:.7rem;padding:.42rem 1rem;
+  background:rgba(8, 2, 4, 0.75);
+  border-top:1px solid var(--glass-border);
+  flex-shrink:0;flex-wrap:wrap;
+}
+.stat{font-size:.62rem;color:var(--text-muted)}
+.stat b{color:var(--text-sub);font-weight:700}
+
+/* ═══════════════════════════════════════════════════
+   TOAST NOTIFICATIONS
+═══════════════════════════════════════════════════ */
+.toasts{
+  position:fixed;bottom:1.35rem;right:1.35rem;z-index:9999;
+  display:flex;flex-direction:column;gap:.4rem;pointer-events:none;
+}
+.toast{
+  background:rgba(18, 5, 10, 0.92);
+  backdrop-filter:blur(22px);
+  border:1px solid var(--glass-border);
+  color:var(--text-main);padding:.55rem 1.05rem;border-radius:12px;
+  font-size:.74rem;animation:toastIn .22s cubic-bezier(.2,0,0,1);
+  box-shadow:0 10px 36px rgba(0,0,0,0.65), 0 0 16px rgba(239, 68, 68, 0.2);
+}
+.toast.ok{border-left:3px solid var(--green-500);box-shadow:0 8px 32px rgba(0,0,0,0.6), 0 0 16px rgba(16,185,129,0.3)}
+.toast.err{border-left:3px solid var(--red-500);box-shadow:0 8px 32px rgba(0,0,0,0.6), var(--glow-crimson)}
+.toast.info{border-left:3px solid var(--rose-400);box-shadow:0 8px 32px rgba(0,0,0,0.6), var(--glow-rose)}
+
+@keyframes toastIn{
+  from{opacity:0;transform:translateX(18px)}
+  to{opacity:1;transform:none}
+}
+
+/* ═══════════════════════════════════════════════════
+   PRINT MEDIA QUERY (GUARANTEED ZERO-INK-BLEED)
+═══════════════════════════════════════════════════ */
+@media print{
+  *{visibility:hidden!important}
+  body,body::before{background:none!important}
+  .orb{display:none!important}
+  #C{
+    visibility:visible!important;
+    position:fixed!important;
+    top:0!important;left:0!important;
+    margin:0!important;padding:0!important;
+    border:none!important;box-shadow:none!important;
+    border-radius:0!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+  @page{margin:0}
+}
+
+/* ═══════════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════════ */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(239, 68, 68, 0.22);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:rgba(239, 68, 68, 0.45)}
+</style>
+</head>
+<body>
+
+<!-- Ambient background orbs -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">🖨️</div>
+    <div>
+      <span class="logo-text">PrintEasy Studio</span>
+      <div class="logo-sub">Professional Photo & Document Layout</div>
+    </div>
+  </div>
+
+  <div class="hdr-mid">
+    <div class="live-pill off" id="livePill">
+      <div class="live-dot off" id="liveDot"></div>
+      <span id="liveLabel">Live Preview</span>
+    </div>
+  </div>
+
+  <div class="hdr-actions">
+    <button class="btn btn-glass btn-sm" id="btnReset">↺ Reset</button>
+    <button class="btn btn-amber btn-sm" id="btnDl" disabled>⬇ PNG</button>
+    <button class="btn btn-green btn-sm" id="btnPrint" disabled>🖨 Print</button>
+  </div>
+</header>
+
+<!-- ═══════════════════ MAIN APPLICATION ═══════════════════ -->
+<div class="app">
+
+  <!-- ══════ SIDEBAR ══════ -->
+  <aside class="sidebar">
+    <div class="tab-bar">
+      <button class="tab on" data-tab="fp">📄 Full Page</button>
+      <button class="tab" data-tab="id">🪪 ID Photo</button>
+    </div>
+
+    <div class="sidebar-scroll">
+
+      <!-- ════════ FULL PAGE PANEL ════════ -->
+      <div class="panel on" id="pFP">
+
+        <!-- Upload Card -->
+        <div class="card">
+          <div class="card-title accent">📂 Upload Images</div>
+          <div class="dropzone" id="fpDZ">
+            <input type="file" id="fpFile" accept="image/jpeg,image/png,image/webp" multiple>
+            <div class="dz-icon">📂</div>
+            <div class="dz-ttl">Drop or Click to Upload</div>
+            <div class="dz-sub">JPG · PNG · WEBP (Multiple Files Supported)</div>
+          </div>
+          <div class="thumbs" id="fpThumbs"></div>
+        </div>
+
+        <!-- Paper & Layout Card -->
+        <div class="card">
+          <div class="card-title accent">📐 Paper & Layout</div>
+
+          <div class="row">
+            <div class="lbl">Paper Size</div>
+            <select id="fpPaper">
+              <option value="short">Short Bond – 8.5 × 11 in</option>
+              <option value="long">Long Bond – 8.5 × 13 in</option>
+              <option value="a4">A4 – 210 × 297 mm</option>
+              <option value="4r">4R Photo – 4 × 6 in</option>
+              <option value="5r">5R Photo – 5 × 7 in</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <div class="lbl">Orientation</div>
+            <div class="pills">
+              <div class="pill"><input type="radio" name="fpO" id="fpPort" value="portrait" checked><label for="fpPort">↕ Portrait</label></div>
+              <div class="pill"><input type="radio" name="fpO" id="fpLand" value="landscape"><label for="fpLand">↔ Landscape</label></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="lbl">Copies per Sheet <span class="badge badge-accent">1, 2 or 4</span></div>
+            <div class="pills">
+              <div class="pill"><input type="radio" name="fpC" id="fpC1" value="1" checked><label for="fpC1">1</label></div>
+              <div class="pill"><input type="radio" name="fpC" id="fpC2" value="2"><label for="fpC2">2</label></div>
+              <div class="pill"><input type="radio" name="fpC" id="fpC4" value="4"><label for="fpC4">4</label></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slot Assignment Card -->
+        <div class="card">
+          <div class="card-title accent">🖼 Slot Assignment <span class="badge badge-accent">Click slot to cycle</span></div>
+          <div class="slot-hint" id="slotHint">Upload images above to assign different photos per slot.</div>
+          <div class="slot-grid g1" id="slotGrid"></div>
+        </div>
+
+        <!-- Image Size Control Card -->
+        <div class="card">
+          <div class="card-title accent">📏 Image Size
+            <span class="badge badge-accent">Resizable</span>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:.64rem;color:var(--text-muted)">Scale inside copy slot</span>
+            <button class="lock-btn on" id="fpLockBtn">🔒 <span id="fpLockTxt">Locked</span></button>
+          </div>
+
+          <div class="dim-row">
+            <div class="dim-field">
+              <label>Width %</label>
+              <div class="dim-wrap">
+                <input class="dim-input" type="number" id="fpImgW" min="10" max="100" value="100" step="1">
+                <span class="dim-unit">%</span>
+              </div>
+            </div>
+            <div class="dim-field">
+              <label>Height %</label>
+              <div class="dim-wrap">
+                <input class="dim-input" type="number" id="fpImgH" min="10" max="100" value="100" step="1">
+                <span class="dim-unit">%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="range-wrap">
+            <span class="icon">W</span>
+            <input type="range" id="fpImgWSlider" min="10" max="100" value="100" step="1">
+            <span class="range-val" id="fpImgWV">100%</span>
+          </div>
+          <div class="range-wrap">
+            <span class="icon">H</span>
+            <input type="range" id="fpImgHSlider" min="10" max="100" value="100" step="1">
+            <span class="range-val" id="fpImgHV">100%</span>
+          </div>
+
+          <button class="btn btn-glass btn-xs" id="fpSizeReset" style="align-self:flex-start">↺ Reset 100%</button>
+        </div>
+
+        <!-- Options Card -->
+        <div class="card">
+          <div class="card-title accent">⚙️ Print Options</div>
+
+          <div class="row">
+            <div class="lbl">Image Fit</div>
+            <select id="fpFit">
+              <option value="contain">Fit Inside (Preserve Ratio)</option>
+              <option value="cover">Fill & Crop (Cover Slot)</option>
+              <option value="stretch">Stretch to Fill</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <div class="lbl">Margin <span style="color:var(--text-muted)">(mm)</span></div>
+            <div class="range-wrap">
+              <input type="range" id="fpMargin" min="0" max="20" value="0" step="1">
+              <span class="range-val" id="fpMarginV">0 mm</span>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="tog-row">
+            <span class="tog-lbl">Cutting Guide Lines</span>
+            <label class="tog"><input type="checkbox" id="fpGuides" checked><span class="tog-s"></span></label>
+          </div>
+          <div class="tog-row">
+            <span class="tog-lbl">Photo Border</span>
+            <label class="tog"><input type="checkbox" id="fpBorder"><span class="tog-s"></span></label>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="range-wrap">
+            <span class="icon">☀️ Bright</span>
+            <input type="range" id="fpBr" min="50" max="150" value="100" step="1">
+            <span class="range-val" id="fpBrV">100</span>
+          </div>
+          <div class="range-wrap">
+            <span class="icon">◑ Contrast</span>
+            <input type="range" id="fpCo" min="50" max="150" value="100" step="1">
+            <span class="range-val" id="fpCoV">100</span>
+          </div>
+        </div>
+
+      </div><!-- /pFP -->
+
+      <!-- ════════ ID PHOTO PANEL ════════ -->
+      <div class="panel" id="pID">
+
+        <!-- Upload Card -->
+        <div class="card">
+          <div class="card-title accent">🤳 Upload Portrait</div>
+          <div class="dropzone" id="idDZ">
+            <input type="file" id="idFile" accept="image/jpeg,image/png,image/webp">
+            <div class="dz-icon">🤳</div>
+            <div class="dz-ttl">Drop or Click to Upload</div>
+            <div class="dz-sub">Face centered · Plain background best</div>
+          </div>
+        </div>
+
+        <!-- Framing Tool Card -->
+        <div class="card" id="frameSec" style="display:none">
+          <div class="card-title accent">🔍 Framing & Pan
+            <span style="font-size:.58rem;color:var(--text-muted);font-weight:400;letter-spacing:0;text-transform:none">Drag · Scroll to Zoom</span>
+          </div>
+          <div class="frame-outer" id="frameOuter" style="height:175px">
+            <canvas id="FC" class="frame-canvas"></canvas>
+            <div class="frame-oval" id="frameOval"></div>
+          </div>
+
+          <div class="range-wrap">
+            <span class="icon">🔍 Zoom</span>
+            <input type="range" id="idZoom" min="50" max="300" value="100" step="1">
+            <span class="range-val" id="idZoomV">100%</span>
+          </div>
+          <div class="range-wrap">
+            <span class="icon">☀️ Bright</span>
+            <input type="range" id="idBr" min="50" max="150" value="100" step="1">
+            <span class="range-val" id="idBrV">100</span>
+          </div>
+
+          <div class="row">
+            <div class="lbl">Background</div>
+            <div class="swatches">
+              <div class="sw on" data-c="#ffffff" style="background:#fff;border-color:#fda4af" title="White"></div>
+              <div class="sw" data-c="#dbeafe" style="background:#dbeafe" title="Light Blue"></div>
+              <div class="sw" data-c="#93c5fd" style="background:#93c5fd" title="Blue"></div>
+              <div class="sw" data-c="#f9fafb" style="background:#f9fafb;border-color:#fda4af" title="Off-White"></div>
+              <div class="sw" data-c="#fef9c3" style="background:#fef9c3" title="Yellow"></div>
+              <div class="sw" data-c="#bbf7d0" style="background:#bbf7d0" title="Green"></div>
+              <div class="sw" data-c="#000000" style="background:#000" title="Black"></div>
+            </div>
+          </div>
+          <div class="tog-row">
+            <span class="tog-lbl">Biometric Oval Guide</span>
+            <label class="tog"><input type="checkbox" id="idOval"><span class="tog-s"></span></label>
+          </div>
+        </div>
+
+        <!-- Paper & Package Card -->
+        <div class="card">
+          <div class="card-title accent">📐 Paper & Package</div>
+
+          <div class="row">
+            <div class="lbl">Paper Size</div>
+            <select id="idPaper">
+              <option value="4r">4R Photo – 4 × 6 in</option>
+              <option value="short">Short Bond – 8.5 × 11 in</option>
+              <option value="long">Long Bond – 8.5 × 13 in</option>
+              <option value="a4">A4 – 210 × 297 mm</option>
+              <option value="5r">5R Photo – 5 × 7 in</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <div class="lbl">Photo Size / Package</div>
+            <div class="pkg-grid" id="pkgs">
+              <div class="pkg on" data-p="2x2"><div class="pkg-t">2×2 inch</div><div class="pkg-s">600×600 · 300dpi</div></div>
+              <div class="pkg" data-p="1x1"><div class="pkg-t">1×1 inch</div><div class="pkg-s">300×300 · 300dpi</div></div>
+              <div class="pkg" data-p="passport"><div class="pkg-t">Passport</div><div class="pkg-s">35×45 mm</div></div>
+              <div class="pkg" data-p="visa"><div class="pkg-t">US Visa</div><div class="pkg-s">2×2 in (51×51mm)</div></div>
+              <div class="pkg" data-p="wallet"><div class="pkg-t">Wallet</div><div class="pkg-s">1.75×2.5 in</div></div>
+              <div class="pkg" data-p="mix"><div class="pkg-t">Mix Pack</div><div class="pkg-s">4× 2×2 + 4× 1×1</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Size Override Card -->
+        <div class="card">
+          <div class="card-title accent">📏 Size Override <span class="badge badge-accent">Optional</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:.64rem;color:var(--text-muted)">Override package size</span>
+            <button class="lock-btn on" id="idLockBtn">🔒 <span id="idLockTxt">Locked</span></button>
+          </div>
+          <div class="dim-row">
+            <div class="dim-field">
+              <label>Width (mm)</label>
+              <div class="dim-wrap">
+                <input class="dim-input" type="number" id="idImgW" min="5" max="300" value="" step="0.5" placeholder="auto">
+              </div>
+            </div>
+            <div class="dim-field">
+              <label>Height (mm)</label>
+              <div class="dim-wrap">
+                <input class="dim-input" type="number" id="idImgH" min="5" max="300" value="" step="0.5" placeholder="auto">
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-glass btn-xs" id="idSizeReset" style="align-self:flex-start">↺ Package Default</button>
+        </div>
+
+        <!-- ID Options Card -->
+        <div class="card">
+          <div class="card-title accent">⚙️ Cutting & Border</div>
+          <div class="tog-row">
+            <span class="tog-lbl">Cutting Guide Lines</span>
+            <label class="tog"><input type="checkbox" id="idGuides" checked><span class="tog-s"></span></label>
+          </div>
+          <div class="tog-row">
+            <span class="tog-lbl">White Photo Border</span>
+            <label class="tog"><input type="checkbox" id="idBorder" checked><span class="tog-s"></span></label>
+          </div>
+        </div>
+
+      </div><!-- /pID -->
+
+    </div><!-- sidebar-scroll -->
+  </aside>
+
+  <!-- ══════ MAIN PREVIEW STAGE ══════ -->
+  <main class="main">
+
+    <div class="prev-bar">
+      <div class="prev-info" id="prevInfo">Upload an image — live preview renders automatically</div>
+      <div class="zoom-ctrls">
+        <button class="btn btn-glass btn-icon btn-sm" id="zOut" title="Zoom Out">−</button>
+        <span class="zoom-num" id="zNum">—</span>
+        <button class="btn btn-glass btn-icon btn-sm" id="zIn" title="Zoom In">+</button>
+        <button class="btn btn-glass btn-xs" id="zFit">Fit</button>
+        <button class="btn btn-glass btn-xs" id="z100">100%</button>
+      </div>
+    </div>
+
+    <div class="canvas-area" id="CA">
+      <canvas id="C"></canvas>
+      <div class="empty" id="emptyState">
+        <div class="empty-icon">🖨️</div>
+        <div class="empty-ttl">Ready to Print</div>
+        <div class="empty-sub">
+          Upload any document or portrait photo on the sidebar.<br>
+          Preview updates <strong>instantly</strong> in real-time.
+        </div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">Canvas: <b id="sSize">—</b></div>
+      <div class="stat">Paper: <b id="sPaper">—</b></div>
+      <div class="stat">DPI: <b>300</b></div>
+      <div class="stat">Layout: <b id="sLayout">—</b></div>
+      <div class="stat">Image: <b id="sImgSz">—</b></div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     JAVASCRIPT LOGIC ENGINE
+═══════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ─── CONSTANTS & RESOLUTION CALIBRATION ─── */
+const DPI = 300;
+const MM_TO_PX = DPI / 25.4;
+const inPx = i => Math.round(i * DPI);
+const mmPx = mm => Math.round(mm * MM_TO_PX);
+
+const PAPERS = {
+  short:{w:inPx(8.5), h:inPx(11), wIn:8.5,       hIn:11,       lbl:'Short Bond 8.5×11in'},
+  long: {w:inPx(8.5), h:inPx(13), wIn:8.5,       hIn:13,       lbl:'Long Bond 8.5×13in'},
+  a4:   {w:mmPx(210), h:mmPx(297),wIn:210/25.4,  hIn:297/25.4, lbl:'A4 210×297mm'},
+  '4r': {w:inPx(4),   h:inPx(6),  wIn:4,         hIn:6,        lbl:'4R 4×6in'},
+  '5r': {w:inPx(5),   h:inPx(7),  wIn:5,         hIn:7,        lbl:'5R 5×7in'},
+};
+
+const SIZES = {
+  '2x2':    {w:inPx(2),    h:inPx(2),   lbl:'2×2 in',          wMm:50.8, hMm:50.8},
+  '1x1':    {w:inPx(1),    h:inPx(1),   lbl:'1×1 in',          wMm:25.4, hMm:25.4},
+  'passport':{w:mmPx(35), h:mmPx(45),  lbl:'Passport 35×45mm',wMm:35,   hMm:45},
+  'visa':   {w:inPx(2),    h:inPx(2),   lbl:'US Visa 2×2 in', wMm:50.8, hMm:50.8},
+  'wallet': {w:inPx(1.75), h:inPx(2.5), lbl:'Wallet 1.75×2.5',wMm:44.45,hMm:63.5},
+};
+
+/* ─── REACTIVE STATE ─── */
+const S = {
+  mode: 'fp',
+  fp: {
+    images: [],
+    active: 0,
+    paper: 'short',
+    orient: 'portrait',
+    copies: 1,
+    fit: 'contain',
+    margin: 0,
+    imgW: 100,
+    imgH: 100,
+    lockAspect: true,
+    guides: true,
+    border: false,
+    brightness: 100,
+    contrast: 100,
+    slotMap: [0, 0, 0, 0],
+  },
+  id: {
+    img: null,
+    paper: '4r',
+    pkg: '2x2',
+    guides: true,
+    border: true,
+    bgColor: '#ffffff',
+    zoom: 1,
+    panX: 0,
+    panY: 0,
+    brightness: 100,
+    oval: false,
+    customW: null,
+    customH: null,
+    lockAspect: true,
+  },
+  view: { zoom: 1 },
+};
+
+/* ─── DOM SELECTORS ─── */
+const $ = id => document.getElementById(id);
+const C = $('C');
+const cx = C.getContext('2d');
+const CA = $('CA');
+const FC = $('FC');
+const fx = FC.getContext('2d');
+
+/* ─── TOAST NOTIFIER ─── */
+function toast(msg, type = 'info', dur = 3200) {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  $('toasts').appendChild(el);
+  setTimeout(() => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(10px)';
+    el.style.transition = 'all .25s ease';
+    setTimeout(() => el.remove(), 260);
+  }, dur);
+}
+
+/* ─── LIVE DOT STATUS ─── */
+let liveTimer = null;
+function flashLive() {
+  $('livePill').classList.remove('off');
+  $('liveDot').classList.remove('off');
+  clearTimeout(liveTimer);
+  liveTimer = setTimeout(() => {
+    $('livePill').classList.add('off');
+    $('liveDot').classList.add('off');
+  }, 1400);
+}
+
+/* ─── ZOOM & FIT VIEWPORT ─── */
+function applyZoom(z) {
+  S.view.zoom = Math.max(0.04, Math.min(6, z));
+  C.style.width = Math.round(C.width * S.view.zoom) + 'px';
+  C.style.height = Math.round(C.height * S.view.zoom) + 'px';
+  $('zNum').textContent = Math.round(S.view.zoom * 100) + '%';
+}
+
+function fitView() {
+  if (!C.width) return;
+  const r = CA.getBoundingClientRect();
+  applyZoom(Math.min((r.width - 44) / C.width, (r.height - 44) / C.height, 1));
+}
+
+$('zIn').addEventListener('click', () => applyZoom(S.view.zoom * 1.2));
+$('zOut').addEventListener('click', () => applyZoom(S.view.zoom * 0.8));
+$('zFit').addEventListener('click', fitView);
+$('z100').addEventListener('click', () => applyZoom(1));
+CA.addEventListener('wheel', e => {
+  e.preventDefault();
+  applyZoom(S.view.zoom * (e.deltaY < 0 ? 1.12 : 0.88));
+}, { passive: false });
+
+/* ─── TAB NAVIGATION ─── */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('on'));
+    t.classList.add('on');
+    $('p' + t.dataset.tab.toUpperCase()).classList.add('on');
+    S.mode = t.dataset.tab;
+    scheduleRender();
+  });
+});
+
+/* ─── RESET APPLICATION ─── */
+$('btnReset').addEventListener('click', () => {
+  S.fp.images = [];
+  S.fp.active = 0;
+  S.fp.imgW = 100;
+  S.fp.imgH = 100;
+  S.fp.slotMap = [0, 0, 0, 0];
+  S.id.img = null;
+  S.id.panX = 0;
+  S.id.panY = 0;
+  S.id.zoom = 1;
+  S.id.customW = null;
+  S.id.customH = null;
+  $('fpThumbs').innerHTML = '';
+  $('frameSec').style.display = 'none';
+  $('fpImgW').value = 100;
+  $('fpImgH').value = 100;
+  $('fpImgWSlider').value = 100;
+  $('fpImgHSlider').value = 100;
+  $('fpImgWV').textContent = '100%';
+  $('fpImgHV').textContent = '100%';
+  $('idImgW').value = '';
+  $('idImgH').value = '';
+  buildSlotGrid();
+  C.style.display = 'none';
+  $('emptyState').style.display = 'flex';
+  $('btnPrint').disabled = $('btnDl').disabled = true;
+  ['sSize', 'sPaper', 'sLayout', 'sImgSz'].forEach(id => $(id).textContent = '—');
+  $('zNum').textContent = '—';
+  toast('Application reset', 'info');
+});
+
+/* ─── PRINT HANDLER ─── */
+$('btnPrint').addEventListener('click', () => {
+  const pd = getPaperDims();
+  let s = document.getElementById('pgStyle');
+  if (!s) {
+    s = document.createElement('style');
+    s.id = 'pgStyle';
+    document.head.appendChild(s);
+  }
+  s.textContent = `@media print{@page{size:${pd.wIn.toFixed(4)}in ${pd.hIn.toFixed(4)}in;margin:0}#C{width:${pd.wIn.toFixed(4)}in!important;height:${pd.hIn.toFixed(4)}in!important;position:fixed!important;top:0!important;left:0!important}}`;
+  toast('Print Ready: Please ensure Scale = 100% in printer dialog', 'info', 6000);
+  setTimeout(() => window.print(), 380);
+});
+
+/* ─── EXPORT PNG ─── */
+$('btnDl').addEventListener('click', () => {
+  C.toBlob(b => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(b);
+    a.download = 'PrintEasy_Layout_300DPI.png';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('Layout downloaded as 300 DPI PNG', 'ok');
+  }, 'image/png');
+});
+
+/* ─── PAPER DIMENSION HELPER ─── */
+function getPaperDims() {
+  if (S.mode === 'fp') {
+    const p = PAPERS[S.fp.paper];
+    if (S.fp.orient === 'landscape') {
+      return { w: p.h, h: p.w, wIn: p.hIn, hIn: p.wIn, lbl: p.lbl + ' ↔' };
+    }
+    return { ...p };
+  }
+  return { ...PAPERS[S.id.paper] };
+}
+
+/* ─── RENDER SCHEDULER (RAF DEBOUNCE) ─── */
+let renderRAF = null;
+function scheduleRender() {
+  if (renderRAF) cancelAnimationFrame(renderRAF);
+  renderRAF = requestAnimationFrame(doRender);
+}
+
+function doRender() {
+  if (S.mode === 'fp') {
+    if (S.fp.images.length) renderFP();
+  } else {
+    if (S.id.img) renderID();
+  }
+  flashLive();
+}
+
+/* ═══════════════ FULL PAGE RENDERER ═══════════════ */
+function renderFP() {
+  const p = getPaperDims();
+  const copies = S.fp.copies;
+  const mgPx = mmPx(S.fp.margin);
+  const cols = copies === 4 ? 2 : 1;
+  const rows = copies === 1 ? 1 : 2;
+  const slotW = Math.floor(p.w / cols);
+  const slotH = Math.floor(p.h / rows);
+
+  C.width = p.w;
+  C.height = p.h;
+  cx.fillStyle = '#ffffff';
+  cx.fillRect(0, 0, p.w, p.h);
+
+  cx.filter = `brightness(${S.fp.brightness}%) contrast(${S.fp.contrast}%)`;
+  let si = 0;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const idx = Math.min(S.fp.slotMap[si] || 0, S.fp.images.length - 1);
+      drawFPSlot(S.fp.images[idx].img, c * slotW, r * slotH, slotW, slotH, mgPx);
+      si++;
+    }
+  }
+  cx.filter = 'none';
+
+  if (S.fp.border) {
+    cx.strokeStyle = '#d4d4d8';
+    cx.lineWidth = 2;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        cx.strokeRect(c * slotW + 1, r * slotH + 1, slotW - 2, slotH - 2);
+      }
+    }
+  }
+
+  if (S.fp.guides && copies > 1) {
+    cx.save();
+    cx.strokeStyle = '#a1a1aa';
+    cx.lineWidth = 1;
+    cx.setLineDash([10, 7]);
+    for (let c2 = 1; c2 < cols; c2++) {
+      cx.beginPath();
+      cx.moveTo(c2 * slotW, 0);
+      cx.lineTo(c2 * slotW, p.h);
+      cx.stroke();
+    }
+    for (let r2 = 1; r2 < rows; r2++) {
+      cx.beginPath();
+      cx.moveTo(0, r2 * slotH);
+      cx.lineTo(p.w, r2 * slotH);
+      cx.stroke();
+    }
+    cx.restore();
+  }
+
+  const uw = (slotW - mgPx * 2) * (S.fp.imgW / 100);
+  const uh = (slotH - mgPx * 2) * (S.fp.imgH / 100);
+  showCanvas();
+  $('prevInfo').innerHTML = `<strong>${copies}</strong> slot(s) on ${p.lbl}`;
+  $('sSize').textContent = `${p.w}×${p.h}`;
+  $('sPaper').textContent = p.lbl;
+  $('sLayout').textContent = `${cols}×${rows}`;
+  $('sImgSz').textContent = `${(uw / DPI * 25.4).toFixed(1)}×${(uh / DPI * 25.4).toFixed(1)} mm`;
+}
+
+function drawFPSlot(img, sx, sy, slotW, slotH, mgPx) {
+  const avW = slotW - mgPx * 2;
+  const avH = slotH - mgPx * 2;
+  if (avW <= 0 || avH <= 0) return;
+  const tW = avW * (S.fp.imgW / 100);
+  const tH = avH * (S.fp.imgH / 100);
+  const ix = sx + mgPx + (avW - tW) / 2;
+  const iy = sy + mgPx + (avH - tH) / 2;
+
+  if (S.fp.fit === 'stretch') {
+    cx.drawImage(img, ix, iy, tW, tH);
+    return;
+  }
+
+  const ia = img.naturalWidth / img.naturalHeight;
+  const ta = tW / tH;
+
+  if (S.fp.fit === 'contain') {
+    let dw, dh;
+    if (ia > ta) {
+      dw = tW;
+      dh = tW / ia;
+    } else {
+      dh = tH;
+      dw = tH * ia;
+    }
+    cx.drawImage(img, ix + (tW - dw) / 2, iy + (tH - dh) / 2, dw, dh);
+  } else {
+    let sw = img.naturalWidth, sh = img.naturalHeight, sx2 = 0, sy2 = 0;
+    if (ia > ta) {
+      sw = Math.round(sh * ta);
+      sx2 = Math.round((img.naturalWidth - sw) / 2);
+    } else {
+      sh = Math.round(sw / ta);
+      sy2 = Math.round((img.naturalHeight - sh) / 2);
+    }
+    cx.save();
+    cx.beginPath();
+    cx.rect(ix, iy, tW, tH);
+    cx.clip();
+    cx.drawImage(img, sx2, sy2, sw, sh, ix, iy, tW, tH);
+    cx.restore();
+  }
+}
+
+/* ═══════════════ ID PHOTO RENDERER ═══════════════ */
+function renderID() {
+  const p = PAPERS[S.id.paper];
+  C.width = p.w;
+  C.height = p.h;
+  cx.fillStyle = S.id.bgColor;
+  cx.fillRect(0, 0, p.w, p.h);
+
+  if (S.id.pkg === 'mix') {
+    renderMix(p);
+  } else {
+    const def = SIZES[S.id.pkg];
+    let sw = def.w, sh = def.h;
+    if (S.id.customW) sw = mmPx(S.id.customW);
+    if (S.id.customH) sh = mmPx(S.id.customH);
+    renderGrid(p, { w: sw, h: sh, lbl: def.lbl });
+  }
+
+  showCanvas();
+  $('sPaper').textContent = p.lbl;
+  $('sSize').textContent = `${p.w}×${p.h}`;
+}
+
+function renderGrid(p, sz) {
+  const cols = Math.floor(p.w / sz.w);
+  const rows = Math.floor(p.h / sz.h);
+  if (!cols || !rows) {
+    toast('Photo size exceeds paper dimensions', 'err');
+    return;
+  }
+  const offX = Math.floor((p.w - cols * sz.w) / 2);
+  const offY = Math.floor((p.h - rows * sz.h) / 2);
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      drawIDSlot(offX + c * sz.w, offY + r * sz.h, sz.w, sz.h);
+    }
+  }
+
+  if (S.id.guides) drawIDGuides(offX, offY, cols, rows, sz.w, sz.h, p);
+
+  const wm = (sz.w / DPI * 25.4).toFixed(1);
+  const hm = (sz.h / DPI * 25.4).toFixed(1);
+  $('prevInfo').innerHTML = `<strong>${cols * rows}×</strong> ${sz.lbl} · ${p.lbl}`;
+  $('sLayout').textContent = `${cols}×${rows}`;
+  $('sImgSz').textContent = `${wm}×${hm} mm`;
+}
+
+function renderMix(p) {
+  const big = SIZES['2x2'], sm = SIZES['1x1'];
+  const bigCols = 2, bigRows = 2, bigW = bigCols * big.w, bigH = bigRows * big.h;
+  const smCols = Math.floor((p.w - bigW) / sm.w), smRows = Math.floor(p.h / sm.h);
+
+  if (smCols < 1 || bigH > p.h) {
+    toast('Paper size too small for mix layout, falling back to 2×2 grid', 'info');
+    renderGrid(p, big);
+    return;
+  }
+
+  const bigOffY = Math.floor((p.h - bigH) / 2);
+  const smOffY = Math.floor((p.h - smRows * sm.h) / 2);
+
+  for (let r = 0; r < bigRows; r++) {
+    for (let c = 0; c < bigCols; c++) {
+      drawIDSlot(c * big.w, bigOffY + r * big.h, big.w, big.h);
+    }
+  }
+
+  for (let r = 0; r < smRows; r++) {
+    for (let c = 0; c < smCols; c++) {
+      drawIDSlot(bigW + c * sm.w, smOffY + r * sm.h, sm.w, sm.h);
+    }
+  }
+
+  if (S.id.guides) {
+    cx.save();
+    cx.setLineDash([7, 5]);
+    cx.strokeStyle = '#999';
+    cx.lineWidth = 1;
+    for (let c = 1; c < bigCols; c++) {
+      cx.beginPath();
+      cx.moveTo(c * big.w, 0);
+      cx.lineTo(c * big.w, p.h);
+      cx.stroke();
+    }
+    for (let r = 1; r < bigRows; r++) {
+      cx.beginPath();
+      cx.moveTo(0, bigOffY + r * big.h);
+      cx.lineTo(bigW, bigOffY + r * big.h);
+      cx.stroke();
+    }
+    cx.strokeStyle = '#555';
+    cx.lineWidth = 2;
+    cx.setLineDash([]);
+    cx.beginPath();
+    cx.moveTo(bigW, 0);
+    cx.lineTo(bigW, p.h);
+    cx.stroke();
+    cx.strokeStyle = '#999';
+    cx.lineWidth = 1;
+    cx.setLineDash([7, 5]);
+    for (let c = 1; c < smCols; c++) {
+      const x = bigW + c * sm.w;
+      cx.beginPath();
+      cx.moveTo(x, 0);
+      cx.lineTo(x, p.h);
+      cx.stroke();
+    }
+    for (let r = 1; r < smRows; r++) {
+      const y = smOffY + r * sm.h;
+      cx.beginPath();
+      cx.moveTo(bigW, y);
+      cx.lineTo(p.w, y);
+      cx.stroke();
+    }
+    cx.restore();
+  }
+
+  $('prevInfo').innerHTML = `Mix: <strong>${bigCols * bigRows}</strong>× 2×2 + <strong>${smCols * smRows}</strong>× 1×1`;
+  $('sLayout').textContent = 'Mix';
+  $('sImgSz').textContent = 'Mixed';
+}
+
+function drawIDSlot(x, y, w, h) {
+  cx.save();
+  cx.beginPath();
+  cx.rect(x, y, w, h);
+  cx.clip();
+  cx.fillStyle = S.id.bgColor;
+  cx.fillRect(x, y, w, h);
+
+  const img = S.id.img;
+  const bs = Math.min(w / img.naturalWidth, h / img.naturalHeight) * S.id.zoom;
+  const iw = img.naturalWidth * bs, ih = img.naturalHeight * bs;
+  const fo = $('frameOuter').getBoundingClientRect();
+  const scX = fo.width ? w / fo.width : 1;
+  const scY = fo.height ? h / fo.height : 1;
+
+  cx.filter = `brightness(${S.id.brightness}%)`;
+  cx.drawImage(img, x + (w - iw) / 2 + S.id.panX * scX, y + (h - ih) / 2 + S.id.panY * scY, iw, ih);
+  cx.filter = 'none';
+  cx.restore();
+
+  if (S.id.border) {
+    cx.strokeStyle = '#ffffff';
+    cx.lineWidth = 4;
+    cx.strokeRect(x + 2, y + 2, w - 4, h - 4);
+  }
+}
+
+function drawIDGuides(offX, offY, cols, rows, sw, sh, p) {
+  cx.save();
+  cx.setLineDash([9, 6]);
+  cx.strokeStyle = '#888';
+  cx.lineWidth = 1;
+  for (let c = 1; c < cols; c++) {
+    const x = offX + c * sw;
+    cx.beginPath();
+    cx.moveTo(x, 0);
+    cx.lineTo(x, p.h);
+    cx.stroke();
+  }
+  for (let r = 1; r < rows; r++) {
+    const y = offY + r * sh;
+    cx.beginPath();
+    cx.moveTo(0, y);
+    cx.lineTo(p.w, y);
+    cx.stroke();
+  }
+  cx.setLineDash([]);
+  cx.strokeStyle = '#aaa';
+  cx.lineWidth = 1;
+  const tk = 22;
+  [[offX, offY], [offX + cols * sw, offY], [offX, offY + rows * sh], [offX + cols * sw, offY + rows * sh]].forEach(([bx, by]) => {
+    cx.beginPath();
+    cx.moveTo(bx - tk, by);
+    cx.lineTo(bx + tk, by);
+    cx.stroke();
+    cx.beginPath();
+    cx.moveTo(bx, by - tk);
+    cx.lineTo(bx, by + tk);
+    cx.stroke();
+  });
+  cx.restore();
+}
+
+function showCanvas() {
+  $('emptyState').style.display = 'none';
+  C.style.display = 'block';
+  $('btnPrint').disabled = false;
+  $('btnDl').disabled = false;
+  setTimeout(fitView, 30);
+}
+
+/* ═══════════════ FRAMING TOOL ═══════════════ */
+let ftDrag = false, ftLX = 0, ftLY = 0;
+const frameOuter = $('frameOuter');
+
+function renderFrame() {
+  if (!S.id.img) return;
+  const r = frameOuter.getBoundingClientRect();
+  const dw = Math.round(r.width) || 200, dh = Math.round(r.height) || 170;
+  FC.width = dw;
+  FC.height = dh;
+  fx.fillStyle = S.id.bgColor;
+  fx.fillRect(0, 0, dw, dh);
+  const img = S.id.img;
+  const bs = Math.min(dw / img.naturalWidth, dh / img.naturalHeight) * S.id.zoom;
+  const iw = img.naturalWidth * bs, ih = img.naturalHeight * bs;
+
+  fx.filter = `brightness(${S.id.brightness}%)`;
+  fx.drawImage(img, (dw - iw) / 2 + S.id.panX, (dh - ih) / 2 + S.id.panY, iw, ih);
+  fx.filter = 'none';
+}
+
+FC.addEventListener('mousedown', e => {
+  ftDrag = true;
+  ftLX = e.clientX;
+  ftLY = e.clientY;
+});
+
+window.addEventListener('mousemove', e => {
+  if (!ftDrag) return;
+  S.id.panX += e.clientX - ftLX;
+  S.id.panY += e.clientY - ftLY;
+  ftLX = e.clientX;
+  ftLY = e.clientY;
+  renderFrame();
+  scheduleRender();
+});
+
+window.addEventListener('mouseup', () => ftDrag = false);
+
+FC.addEventListener('wheel', e => {
+  e.preventDefault();
+  S.id.zoom = Math.max(0.1, Math.min(10, S.id.zoom * (e.deltaY < 0 ? 1.1 : 0.9)));
+  $('idZoom').value = Math.round(S.id.zoom * 100);
+  $('idZoomV').textContent = Math.round(S.id.zoom * 100) + '%';
+  renderFrame();
+  scheduleRender();
+}, { passive: false });
+
+let ftTX = 0, ftTY = 0;
+FC.addEventListener('touchstart', e => {
+  ftTX = e.touches[0].clientX;
+  ftTY = e.touches[0].clientY;
+});
+
+FC.addEventListener('touchmove', e => {
+  e.preventDefault();
+  S.id.panX += e.touches[0].clientX - ftTX;
+  S.id.panY += e.touches[0].clientY - ftTY;
+  ftTX = e.touches[0].clientX;
+  ftTY = e.touches[0].clientY;
+  renderFrame();
+  scheduleRender();
+}, { passive: false });
+
+/* ═══════════════ UPLOAD MANAGEMENT ═══════════════ */
+function setupDZ(zid, fid, onFiles) {
+  const z = $(zid), inp = $(fid);
+  z.addEventListener('dragover', e => {
+    e.preventDefault();
+    z.classList.add('over');
+  });
+  z.addEventListener('dragleave', () => z.classList.remove('over'));
+  z.addEventListener('drop', e => {
+    e.preventDefault();
+    z.classList.remove('over');
+    onFiles([...e.dataTransfer.files]);
+  });
+  inp.addEventListener('change', () => onFiles([...inp.files]));
+}
+
+function loadImg(file) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      res(img);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      rej();
+    };
+    img.src = url;
+  });
+}
+
+setupDZ('fpDZ', 'fpFile', async files => {
+  let n = 0;
+  for (const f of files) {
+    if (!f.type.startsWith('image/')) continue;
+    try {
+      S.fp.images.push({ img: await loadImg(f), name: f.name });
+      n++;
+    } catch {
+      toast('Failed to load: ' + f.name, 'err');
+    }
+  }
+  if (n) {
+    buildFpThumbs();
+    scheduleRender();
+    toast(`${n} image(s) loaded successfully`, 'ok');
+  }
+});
+
+function buildFpThumbs() {
+  const row = $('fpThumbs');
+  row.innerHTML = '';
+  S.fp.images.forEach((e, i) => {
+    const w = document.createElement('div');
+    w.className = 'thumb-wrap';
+    const img = document.createElement('img');
+    img.className = 'thumb' + (i === S.fp.active ? ' on' : '');
+    img.src = e.img.src;
+    img.addEventListener('click', () => {
+      S.fp.active = i;
+      buildFpThumbs();
+      scheduleRender();
+    });
+    const x = document.createElement('button');
+    x.className = 'thumb-x';
+    x.textContent = '×';
+    x.addEventListener('click', ev => {
+      ev.stopPropagation();
+      const removed = i;
+      S.fp.images.splice(i, 1);
+      if (S.fp.active >= S.fp.images.length) {
+        S.fp.active = Math.max(0, S.fp.images.length - 1);
+      }
+      S.fp.slotMap = S.fp.slotMap.map(idx => {
+        if (idx === removed) return Math.max(0, S.fp.images.length - 1);
+        if (idx > removed) return idx - 1;
+        return idx;
+      });
+      buildFpThumbs();
+      if (S.fp.images.length) {
+        scheduleRender();
+      } else {
+        C.style.display = 'none';
+        $('emptyState').style.display = 'flex';
+        $('btnPrint').disabled = $('btnDl').disabled = true;
+      }
+    });
+    w.appendChild(img);
+    w.appendChild(x);
+    row.appendChild(w);
+  });
+  buildSlotGrid();
+}
+
+/* ─── SLOT ASSIGNMENT ENGINE ─── */
+function buildSlotGrid() {
+  const grid = $('slotGrid'), hint = $('slotHint'), copies = S.fp.copies, imgs = S.fp.images;
+  for (let i = 0; i < 4; i++) {
+    if (imgs.length && S.fp.slotMap[i] >= imgs.length) {
+      S.fp.slotMap[i] = i % imgs.length;
+    }
+  }
+  grid.innerHTML = '';
+  grid.className = 'slot-grid ' + (copies === 1 ? 'g1' : 'g2');
+  if (!imgs.length) {
+    hint.style.display = 'block';
+    return;
+  }
+  hint.style.display = 'none';
+  const labels = copies === 1 ? ['Full Page'] : copies === 2 ? ['Slot 1 — Top', 'Slot 2 — Bottom'] : ['Slot 1 (TL)', 'Slot 2 (TR)', 'Slot 3 (BL)', 'Slot 4 (BR)'];
+
+  for (let si = 0; si < copies; si++) {
+    const imgIdx = Math.min(S.fp.slotMap[si] || 0, imgs.length - 1);
+    const item = document.createElement('div');
+    item.className = 'slot-item';
+    const lbl = document.createElement('div');
+    lbl.className = 'slot-label';
+    lbl.textContent = labels[si];
+    item.appendChild(lbl);
+
+    const imgEl = document.createElement('img');
+    imgEl.className = 'slot-img';
+    imgEl.src = imgs[imgIdx].img.src;
+    item.appendChild(imgEl);
+
+    const chg = document.createElement('div');
+    chg.className = 'slot-change';
+    chg.textContent = 'Change ↻';
+    item.appendChild(chg);
+
+    item.addEventListener('click', () => {
+      S.fp.slotMap[si] = (S.fp.slotMap[si] + 1) % imgs.length;
+      buildSlotGrid();
+      scheduleRender();
+      toast(`Slot ${si + 1} set to: ${imgs[S.fp.slotMap[si]].name || 'Image ' + (S.fp.slotMap[si] + 1)}`, 'info', 1600);
+    });
+    grid.appendChild(item);
+  }
+}
+
+setupDZ('idDZ', 'idFile', async files => {
+  const f = files[0];
+  if (!f) return;
+  try {
+    S.id.img = await loadImg(f);
+    S.id.panX = 0;
+    S.id.panY = 0;
+    S.id.zoom = 1;
+    $('frameSec').style.display = 'flex';
+    renderFrame();
+    scheduleRender();
+    toast('Portrait photo loaded', 'ok');
+  } catch {
+    toast('Failed to load photo', 'err');
+  }
+});
+
+/* ═══════════════ RESIZE CONTROLS ═══════════════ */
+function setFpW(val) {
+  val = Math.max(10, Math.min(100, val));
+  if (S.fp.lockAspect) {
+    S.fp.imgW = val;
+    S.fp.imgH = val;
+    $('fpImgH').value = val;
+    $('fpImgHSlider').value = val;
+    $('fpImgHV').textContent = val + '%';
+  } else {
+    S.fp.imgW = val;
+  }
+  $('fpImgW').value = val;
+  $('fpImgWSlider').value = val;
+  $('fpImgWV').textContent = val + '%';
+  scheduleRender();
+}
+
+function setFpH(val) {
+  val = Math.max(10, Math.min(100, val));
+  if (S.fp.lockAspect) {
+    S.fp.imgW = val;
+    S.fp.imgH = val;
+    $('fpImgW').value = val;
+    $('fpImgWSlider').value = val;
+    $('fpImgWV').textContent = val + '%';
+  } else {
+    S.fp.imgH = val;
+  }
+  $('fpImgH').value = val;
+  $('fpImgHSlider').value = val;
+  $('fpImgHV').textContent = val + '%';
+  scheduleRender();
+}
+
+$('fpImgWSlider').addEventListener('input', e => setFpW(+e.target.value));
+$('fpImgHSlider').addEventListener('input', e => setFpH(+e.target.value));
+$('fpImgW').addEventListener('input', e => setFpW(+e.target.value));
+$('fpImgH').addEventListener('input', e => setFpH(+e.target.value));
+$('fpImgW').addEventListener('change', e => setFpW(+e.target.value));
+$('fpImgH').addEventListener('change', e => setFpH(+e.target.value));
+
+$('fpLockBtn').addEventListener('click', () => {
+  S.fp.lockAspect = !S.fp.lockAspect;
+  $('fpLockBtn').classList.toggle('on', S.fp.lockAspect);
+  $('fpLockTxt').textContent = S.fp.lockAspect ? 'Locked' : 'Free';
+  toast(S.fp.lockAspect ? 'Aspect ratio locked' : 'Width and height unlocked', 'info', 2000);
+});
+
+$('fpSizeReset').addEventListener('click', () => {
+  setFpW(100);
+  setFpH(100);
+  toast('Image size reset to 100%', 'info', 1500);
+});
+
+/* ═══════════════ ID OVERRIDE CONTROLS ═══════════════ */
+function setIdW(val) {
+  val = parseFloat(val) || null;
+  if (!val) {
+    S.id.customW = null;
+    $('idImgW').value = '';
+    return;
+  }
+  val = Math.max(5, Math.min(300, val));
+  S.id.customW = val;
+  if (S.id.lockAspect && S.id.customH) {
+    const def = SIZES[S.id.pkg];
+    const r = def.hMm / def.wMm;
+    S.id.customH = parseFloat((val * r).toFixed(1));
+    $('idImgH').value = S.id.customH;
+  }
+  scheduleRender();
+}
+
+function setIdH(val) {
+  val = parseFloat(val) || null;
+  if (!val) {
+    S.id.customH = null;
+    $('idImgH').value = '';
+    return;
+  }
+  val = Math.max(5, Math.min(300, val));
+  S.id.customH = val;
+  if (S.id.lockAspect && S.id.customW) {
+    const def = SIZES[S.id.pkg];
+    const r = def.wMm / def.hMm;
+    S.id.customW = parseFloat((val * r).toFixed(1));
+    $('idImgW').value = S.id.customW;
+  }
+  scheduleRender();
+}
+
+$('idImgW').addEventListener('change', e => setIdW(e.target.value));
+$('idImgH').addEventListener('change', e => setIdH(e.target.value));
+$('idImgW').addEventListener('input', e => {
+  if (e.target.value === '') {
+    S.id.customW = null;
+    scheduleRender();
+  }
+});
+$('idImgH').addEventListener('input', e => {
+  if (e.target.value === '') {
+    S.id.customH = null;
+    scheduleRender();
+  }
+});
+
+$('idLockBtn').addEventListener('click', () => {
+  S.id.lockAspect = !S.id.lockAspect;
+  $('idLockBtn').classList.toggle('on', S.id.lockAspect);
+  $('idLockTxt').textContent = S.id.lockAspect ? 'Locked' : 'Free';
+  toast(S.id.lockAspect ? 'ID Aspect ratio locked' : 'ID Width and height unlocked', 'info', 2000);
+});
+
+$('idSizeReset').addEventListener('click', () => {
+  S.id.customW = null;
+  S.id.customH = null;
+  $('idImgW').value = '';
+  $('idImgH').value = '';
+  scheduleRender();
+  toast('Reset to package standard', 'info', 1500);
+});
+
+/* ═══════════════ GENERAL EVENT LISTENERS ═══════════════ */
+$('fpPaper').addEventListener('change', e => { S.fp.paper = e.target.value; scheduleRender(); });
+$('fpFit').addEventListener('change', e => { S.fp.fit = e.target.value; scheduleRender(); });
+$('fpGuides').addEventListener('change', e => { S.fp.guides = e.target.checked; scheduleRender(); });
+$('fpBorder').addEventListener('change', e => { S.fp.border = e.target.checked; scheduleRender(); });
+
+document.querySelectorAll('input[name=fpO]').forEach(r => r.addEventListener('change', e => {
+  S.fp.orient = e.target.value;
+  scheduleRender();
+}));
+
+document.querySelectorAll('input[name=fpC]').forEach(r => r.addEventListener('change', e => {
+  S.fp.copies = +e.target.value;
+  buildSlotGrid();
+  scheduleRender();
+}));
+
+$('fpMargin').addEventListener('input', e => {
+  S.fp.margin = +e.target.value;
+  $('fpMarginV').textContent = e.target.value + ' mm';
+  scheduleRender();
+});
+
+$('fpBr').addEventListener('input', e => {
+  S.fp.brightness = +e.target.value;
+  $('fpBrV').textContent = e.target.value;
+  scheduleRender();
+});
+
+$('fpCo').addEventListener('input', e => {
+  S.fp.contrast = +e.target.value;
+  $('fpCoV').textContent = e.target.value;
+  scheduleRender();
+});
+
+$('idPaper').addEventListener('change', e => { S.id.paper = e.target.value; scheduleRender(); });
+$('idGuides').addEventListener('change', e => { S.id.guides = e.target.checked; scheduleRender(); });
+$('idBorder').addEventListener('change', e => { S.id.border = e.target.checked; scheduleRender(); });
+
+$('idOval').addEventListener('change', e => {
+  S.id.oval = e.target.checked;
+  $('frameOval').style.display = S.id.oval ? 'block' : 'none';
+  renderFrame();
+  scheduleRender();
+});
+
+$('idZoom').addEventListener('input', e => {
+  S.id.zoom = +e.target.value / 100;
+  $('idZoomV').textContent = e.target.value + '%';
+  renderFrame();
+  scheduleRender();
+});
+
+$('idBr').addEventListener('input', e => {
+  S.id.brightness = +e.target.value;
+  $('idBrV').textContent = e.target.value;
+  renderFrame();
+  scheduleRender();
+});
+
+document.querySelectorAll('.pkg').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.pkg').forEach(c => c.classList.remove('on'));
+    card.classList.add('on');
+    S.id.pkg = card.dataset.p;
+    scheduleRender();
+  });
+});
+
+document.querySelectorAll('.sw').forEach(s => {
+  s.addEventListener('click', () => {
+    document.querySelectorAll('.sw').forEach(x => x.classList.remove('on'));
+    s.classList.add('on');
+    S.id.bgColor = s.dataset.c;
+    renderFrame();
+    scheduleRender();
+  });
+});
+
+/* ─── INITIALIZE ─── */
+buildSlotGrid();
+</script>
+</body>
+</html>
